@@ -1,1 +1,0 @@
-# vehicle-telemetry-platform
