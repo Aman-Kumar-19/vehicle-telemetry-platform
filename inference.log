@@ -1,0 +1,7 @@
+INFO:     Started server process [75274]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+/usr/local/lib/python3.12/dist-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but RandomForestClassifier was fitted with feature names
+  warnings.warn(
+INFO:     127.0.0.1:58756 - "POST /predict_failure HTTP/1.1" 200 OK
