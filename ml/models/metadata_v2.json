@@ -1,0 +1,15 @@
+{
+    "version": "v2",
+    "training_timestamp": "2026-02-24T08:50:51.482230",
+    "dataset_size": 25000,
+    "hyperparameters": {
+        "n_estimators": 200,
+        "max_depth": 12
+    },
+    "metrics": {
+        "accuracy": 0.7964,
+        "precision": 0.7092,
+        "recall": 0.4346,
+        "roc_auc": 0.8633
+    }
+}

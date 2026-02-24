@@ -34,11 +34,10 @@ y_proba = model.predict_proba(X_test)[:, 1]
 
 # Metrics
 metrics = {
-    "accuracy": round(accuracy_score(y_test, y_pred), 4),
-    "precision": round(precision_score(y_test, y_pred), 4),
-    "recall": round(recall_score(y_test, y_pred), 4),
-    "roc_auc": round(roc_auc_score(y_test, y_proba), 4),
-    "timestamp": datetime.utcnow().isoformat()
+    "accuracy": float(round(accuracy_score(y_test, y_pred), 4)),
+    "precision": float(round(precision_score(y_test, y_pred), 4)),
+    "recall": float(round(recall_score(y_test, y_pred), 4)),
+    "roc_auc": float(round(roc_auc_score(y_test, y_proba), 4))
 }
 
 # Save model
