@@ -6,10 +6,13 @@ from .schemas import TelemetryCreate, TelemetryResponse
 from .health_service import evaluate_vehicle_health
 from .alerts import create_alerts
 from .analytics_service import fleet_overview, vehicle_utilization
+from services.telemetry_simulator import TelemetrySimulator
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Vehicle Telemetry Platform")
+# Initialize Telemetry Simulator (Phase 3)
+simulator = TelemetrySimulator()
 
 @app.get("/")
 def root():
@@ -73,3 +76,33 @@ def get_fleet_overview(db: Session = Depends(get_db)):
 @app.get("/analytics/utilization/{vehicle_id}")
 def get_utilization(vehicle_id: int, db: Session = Depends(get_db)):
     return vehicle_utilization(vehicle_id, db)
+
+@app.post("/simulate/{vehicle_id}")
+def simulate_vehicle(vehicle_id: int, db: Session = Depends(get_db)):
+    # Generate realistic telemetry
+    simulated_data = simulator.generate()
+
+    # Convert into DB model
+    record = TelemetryRecord(
+        vehicle_id=vehicle_id,
+        speed=simulated_data["speed"],
+        rpm=simulated_data["rpm"],
+        engine_temp=simulated_data["engine_temp"],
+        battery_voltage=simulated_data["battery_voltage"],
+    )
+
+    db.add(record)
+    db.commit()
+    db.refresh(record)
+
+    # Evaluate health
+    health = evaluate_vehicle_health(record)
+
+    # Generate alerts if needed
+    create_alerts(vehicle_id, health, db)
+
+    return {
+        "status": "simulated",
+        "telemetry": simulated_data,
+        "health": health
+    }
