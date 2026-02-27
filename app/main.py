@@ -7,6 +7,7 @@ from .health_service import evaluate_vehicle_health
 from .alerts import create_alerts
 from .analytics_service import fleet_overview, vehicle_utilization
 from services.telemetry_simulator import TelemetrySimulator
+from services.alert_service.alert_engine import process_inference
 
 Base.metadata.create_all(bind=engine)
 
@@ -98,11 +99,15 @@ def simulate_vehicle(vehicle_id: int, db: Session = Depends(get_db)):
     # Evaluate health
     health = evaluate_vehicle_health(record)
 
-    # Generate alerts if needed
-    create_alerts(vehicle_id, health, db)
+    # Phase 4: Intelligent Alert Engine
+    alert_result = process_inference(
+    vehicle_id,
+    simulated_data["failure_probability"]
+    )
 
     return {
-        "status": "simulated",
-        "telemetry": simulated_data,
-        "health": health
-    }
+      "status": "simulated",
+      "telemetry": simulated_data,
+      "health": health,
+      "alert_engine": alert_result
+      } 
