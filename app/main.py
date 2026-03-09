@@ -1,3 +1,7 @@
+import time
+import logging
+from fastapi import Request
+from app.logging_config import setup_logging, get_logger
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from .database import engine, Base, get_db
@@ -14,6 +18,8 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Vehicle Telemetry Platform")
 # Initialize Telemetry Simulator (Phase 3)
 simulator = TelemetrySimulator()
+setup_logging()
+logger = get_logger("vehicle-platform")
 
 @app.get("/")
 def root():
@@ -110,4 +116,37 @@ def simulate_vehicle(vehicle_id: int, db: Session = Depends(get_db)):
       "telemetry": simulated_data,
       "health": health,
       "alert_engine": alert_result
-      } 
+      }
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start_time = time.time()
+    logger.info(f"Incoming request: {request.method} {request.url}")
+    response = await call_next(request)
+    duration = round((time.time() - start_time) * 1000, 2)
+    logger.info(
+        f"Completed: {request.method} {request.url} "
+        f"Status: {response.status_code} "
+        f"Duration: {duration}ms"
+    )
+    return response
+
+
+@app.get("/metrics")
+def metrics():
+    logger.info("Metrics endpoint accessed")
+    return {
+        "total_requests": request_count
+    }
+
+
+# -----------------------------
+# ✅ Health Check Endpoint
+# -----------------------------
+@app.get("/health")
+def health_check():
+    logger.info("Health check endpoint called")
+    return {
+        "status": "healthy",
+        "service": "vehicle-telemetry-platform"
+    }
