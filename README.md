@@ -121,7 +121,86 @@ API --> Alerts[Alert Engine]
 API --> DB[(Database)]
 ```
 ----
+## 🚀 Quick Start
 
+### 1. Clone the repository
+```text
+git clone https://github.com/Aman-Kumar-19/vehicle-telemetry-platform.git
+
+cd vehicle-telemetry-platform
+```
+### 2. Install dependencies
+```text
+pip install -r requirements.txt
+```
+### 3. Run the API
+```text
+uvicorn app.main:app --reload
+```
+### 4. Open API docs
+```
+http://127.0.0.1:8000/docs
+```
+------------
+## Environment Setup
+
+Python version: 3.10+
+
+Dependencies installed via:
+```
+pip install -r requirements.txt
+```
+----
+## 🐳 Docker Deployment
+
+Build image:
+```
+docker build -t telemetry-platform .
+```
+Run container:
+```
+docker run -p 8000:8000 telemetry-platform
+```
+---
+# API Documentation Section
+## 📡 API Endpoints
+
+| Endpoint | Method | Description |
+|--------|--------|-------------|
+| /ingest | POST | Store telemetry |
+| /simulate/{vehicle_id} | POST | Generate simulated telemetry |
+| /vehicle/{vehicle_id}/health | GET | Latest vehicle health |
+| /vehicle/{vehicle_id}/history | GET | Telemetry history |
+| /alerts | GET | All alerts |
+| /alerts/{vehicle_id} | GET | Vehicle alerts |
+| /analytics/fleet-overview | GET | Fleet analytics |
+| /metrics | GET | System metrics |
+| /health | GET | Service health |
+
+----
+# 📊 Example API Response
+
+Simulate Telemetry
+```
+POST /simulate/1
+```
+Example response:
+```json
+{
+  "status": "simulated",
+  "telemetry": {
+    "speed": 72,
+    "rpm": 3100,
+    "engine_temp": 94,
+    "battery_voltage": 12.4
+  },
+  "risk": {
+    "risk_score": 0.62,
+    "severity": "Medium"
+  }
+}
+```
+----
 # 🧩 Component Responsibilities
 
 ## Telemetry Simulator
@@ -203,4 +282,25 @@ Low
 Medium
 Critical
 ```
+## 🤖 Machine Learning Pipeline
 
+The ML system predicts potential vehicle failures using telemetry features.
+
+Pipeline:
+
+Dataset → Feature Engineering → Model Training → Inference Service
+
+Location:
+```
+ml/training_pipeline/train.py
+ml/models/failure_model_v2.pkl
+```
+
+----
+## Contributing
+
+Contributions are welcome.
+
+1. Fork the repo
+2. Create a branch
+3. Submit a PR
