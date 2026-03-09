@@ -24,6 +24,57 @@ The platform simulates vehicle telemetry data and processes it through a pipelin
 
 This mirrors real-world fleet management and predictive maintenance systems.
 
+----
+# 📁 Project Structure
+```
+vehicle-telemetry-platform
+│
+├── app/
+│ ├── main.py                      # FastAPI application entry point
+│ ├── database.py                  # Database connection and session management
+│ ├── models.py                    # SQLAlchemy database models
+│ ├── schemas.py                   # Pydantic request/response schemas
+│ ├── alerts.py                    # Alert creation utilities
+│ ├── analytics_service.py         # Fleet analytics logic
+│ ├── health_service.py            # Vehicle health evaluation logic
+│ ├── logging_config.py            # Structured logging configuration
+│ └── simulator.py                 # API simulator helper
+│
+├── services/
+│ ├── telemetry_simulator.py       # Generates realistic vehicle telemetry
+│ │
+│ ├── inference_service/
+│ │ └── main.py                    # ML inference microservice
+│ │
+│ └── alert_service/
+│ ├── init.py
+│ ├── alert_engine.py              # Intelligent alert processing
+│ ├── risk_evaluator.py            # Risk score calculation
+│ └── severity.py                  # Severity classification (Low/Medium/Critical)
+│
+├── ml/
+│ ├── feature_engineering/
+│ │ └── transform.py               # Feature transformation pipeline
+│ │
+│ ├── models/
+│ │ ├── failure_model_v1.pkl       # Initial ML model
+│ │ ├── failure_model_v2.pkl       # Improved ML model
+│ │ ├── metadata_v2.json           # Model metadata
+│ │ └── metrics_v1.json            # Training metrics
+│ │
+│ └── training_pipeline/
+│ ├── config.json                  # Training configuration
+│ ├── generate_dataset.py          # Dataset generation script
+│ ├── historical_vehicle_data.csv
+│ └── train.py                     # Model training pipeline
+│
+├── Dockerfile                     # Container build instructions
+├── requirements.txt               # Python dependencies
+├── .gitignore                     # Git ignored files
+├── inference.log                  # Inference service logs
+└── README.md                      # Project documentation
+```
+
 ---
 
 # 🏗 System Architecture
