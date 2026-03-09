@@ -26,7 +26,7 @@ This mirrors real-world fleet management and predictive maintenance systems.
 
 ----
 # 📁 Project Structure
-```
+```markdown
 vehicle-telemetry-platform
 │
 ├── app/
